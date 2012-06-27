@@ -1,0 +1,5 @@
+= puppet-rsyslog module
+
+{<img src='https://codex.cegeka.be/jenkins/job/puppet-rsyslog/badge/icon' />}[https://codex.cegeka.be/jenkins/job/puppet-rsyslog/]
+
+This is the rsyslog module.
