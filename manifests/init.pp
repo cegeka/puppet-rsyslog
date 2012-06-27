@@ -13,7 +13,7 @@
 class rsyslog {
 
   package { 'rsyslog':
-    ensure => latest,
+    ensure => present,
   }
 
   file { '/etc/rsyslog.conf':
