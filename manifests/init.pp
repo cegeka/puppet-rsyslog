@@ -31,7 +31,12 @@ class rsyslog {
     enable     => true,
     hasrestart => true,
     hasstatus  => true,
-    require    => Package['rsyslog'],
+    require    => [ Package['rsyslog'], Service['syslog'] ],
+  }
+
+  service { 'syslog':
+    ensure    => stopped,
+    hasstatus => true,
   }
 
   file { '/var/log/messages':
