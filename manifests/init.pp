@@ -26,6 +26,15 @@ class rsyslog {
     require => Package['rsyslog'],
   }
 
+  file { '/etc/rsyslog.d':
+    ensure  => directory,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
+    notify  => Service['rsyslog'],
+    require => Package['rsyslog'],
+  }
+
   service { 'rsyslog':
     ensure     => running,
     enable     => true,
