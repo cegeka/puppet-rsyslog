@@ -18,4 +18,10 @@ describe 'rsyslog' do
         'group'  => 'root',
         'mode'   => '0644',
   })}
+  it { should contain_file('/etc/rsyslog.d').with({
+        'ensure' => 'directory',
+        'owner'  => 'root',
+        'group'  => 'root',
+        'mode'   => '0755',
+  })}
 end
