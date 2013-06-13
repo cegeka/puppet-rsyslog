@@ -13,6 +13,7 @@ define rsyslog::rule (
         mode    => '0644',
         content => "${facility}.${level}  ${destination}\n",
         notify  => 'Service[rsyslog]',
+        require => 'File[/etc/rsyslog.d]'
       }
     }
     default: {
