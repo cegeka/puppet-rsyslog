@@ -15,7 +15,7 @@ define rsyslog::config::directives (
       }
     }
     default: {
-      fail("Rsyslog::Configuration[${title}]: osfamily ${::osfamily} is not supported")
+      fail("Rsyslog::Config::Directives[${title}]: osfamily ${::osfamily} is not supported")
     }
   }
 }
