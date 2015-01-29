@@ -66,4 +66,20 @@ class rsyslog ($conffile = 'puppet:///modules/rsyslog/rsyslog.conf')
     mode   => '0644',
   }
 
+  file { '/etc/logrotate.d/rsyslog':
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source => "puppet:///modules/${module_name}/rsyslog.logrotate"
+  }
+
+  file { '/etc/logrotate.d/syslog':
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    content => ""
+  }
+
 }
