@@ -10,7 +10,8 @@
 #
 # Sample Usage:
 #
-class rsyslog {
+class rsyslog ($conffile = 'puppet:///modules/rsyslog/rsyslog.conf')
+{
 
   package { 'rsyslog':
     ensure => present,
@@ -21,7 +22,16 @@ class rsyslog {
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => "puppet:///modules/${module_name}/rsyslog.conf",
+    source  => $conffile,
+    notify  => Service['rsyslog'],
+    require => Package['rsyslog'],
+  }
+
+  file { '/etc/rsyslog.d':
+    ensure  => directory,
+    owner   => root,
+    group   => root,
+    mode    => '0755',
     notify  => Service['rsyslog'],
     require => Package['rsyslog'],
   }
@@ -54,6 +64,22 @@ class rsyslog {
     owner  => root,
     group  => root,
     mode   => '0644',
+  }
+
+  file { '/etc/logrotate.d/rsyslog':
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    source => "puppet:///modules/${module_name}/rsyslog.logrotate"
+  }
+
+  file { '/etc/logrotate.d/syslog':
+    ensure => file,
+    owner  => root,
+    group  => root,
+    mode   => '0644',
+    content => ""
   }
 
 }
