@@ -27,6 +27,16 @@ class rsyslog ($conffile = 'puppet:///modules/rsyslog/rsyslog.conf')
     require => Package['rsyslog'],
   }
 
+  file { '/etc/sysconfig/rsyslog':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    source  => 'puppet:///modules/rsyslog/rsyslog.sysconfig',
+    notify  => Service['rsyslog'],
+    require => Package['rsyslog'],
+  }
+
   file { '/etc/rsyslog.d':
     ensure  => directory,
     owner   => root,
