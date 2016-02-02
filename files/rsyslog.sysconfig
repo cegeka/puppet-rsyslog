@@ -1,0 +1,4 @@
+# This file is managed by puppet
+# Options for rsyslogd
+# See rsyslogd(8) for more details
+SYSLOGD_OPTIONS="-i /var/run/rsyslogd.pid"
