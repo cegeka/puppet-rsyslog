@@ -24,7 +24,6 @@
 . /etc/init.d/functions
 
 RETVAL=0
-PIDFILE=/var/run/rsyslogd.pid
 
 prog=rsyslog
 exec=/sbin/rsyslogd
@@ -41,7 +40,7 @@ start() {
 	umask 077
 
         echo -n $"Starting system logger: "
-        daemon --pidfile="$PIDFILE" $exec -i "$PIDFILE" $SYSLOGD_OPTIONS
+        daemon --pidfile="$PIDFILE" $exec $SYSLOGD_OPTIONS
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch $lockfile
