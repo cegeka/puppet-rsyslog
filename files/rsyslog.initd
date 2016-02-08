@@ -40,7 +40,7 @@ start() {
 	umask 077
 
         echo -n $"Starting system logger: "
-        daemon --pidfile="$PIDFILE" $exec $SYSLOGD_OPTIONS
+        daemon $exec $SYSLOGD_OPTIONS
         RETVAL=$?
         echo
         [ $RETVAL -eq 0 ] && touch $lockfile
