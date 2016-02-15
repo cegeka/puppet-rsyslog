@@ -2,4 +2,4 @@
 # Options for rsyslogd
 # See rsyslogd(8) for more details
 PIDFILE="/var/run/rsyslogd.pid"
-SYSLOGD_OPTIONS="-i $PIDFILE -c 5"
+SYSLOGD_OPTIONS="-i /var/run/rsyslogd.pid -c 5"
