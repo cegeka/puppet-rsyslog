@@ -10,25 +10,35 @@
 #
 # Sample Usage:
 #
-class rsyslog ($conffile = 'puppet:///modules/rsyslog/rsyslog.conf')
-{
+class rsyslog (
+  $package = 'rsyslog',
+  $package_ensure = present,
+  $config_dst = '/etc/rsyslog.conf',
+  $config_src = 'puppet:///modules/rsyslog/rsyslog.conf',
+  $config_ensure = present,
+  $service_ensure = running,
+  $service_enable = true,
+  $manage_syslog = true,
+  $syslog_ensure = stopped,
+  $log_perm = '0644'
+) {
 
-  package { 'rsyslog':
-    ensure => present,
+  package { $package :
+    ensure => $package_ensure,
   }
 
-  file { '/etc/rsyslog.conf':
-    ensure  => file,
+  file { $config_dst :
+    ensure  => $config_ensure,
     owner   => root,
     group   => root,
     mode    => '0644',
-    source  => $conffile,
+    source  => $config_src,
     notify  => Service['rsyslog'],
     require => Package['rsyslog'],
   }
 
   file { '/etc/sysconfig/rsyslog':
-    ensure  => file,
+    ensure  => $config_ensure,
     owner   => root,
     group   => root,
     mode    => '0644',
@@ -56,24 +66,33 @@ class rsyslog ($conffile = 'puppet:///modules/rsyslog/rsyslog.conf')
     require => Package['rsyslog'],
   }
 
-  service { 'rsyslog':
-    ensure     => running,
-    enable     => true,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => [ Package['rsyslog'], Service['syslog'] ],
-  }
-
-  service { 'syslog':
-    ensure    => stopped,
-    hasstatus => true,
+  if $manage_syslog {
+    service { 'rsyslog':
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      require    => [ Package['rsyslog'], Service['syslog'] ],
+    }
+    service { 'syslog':
+      ensure    => $syslog_ensure,
+      hasstatus => true,
+    }
+  } else {
+    service { 'rsyslog':
+      ensure     => $service_ensure,
+      enable     => $service_enable,
+      hasrestart => true,
+      hasstatus  => true,
+      require    => Package['rsyslog'],
+    }
   }
 
   file { '/var/log/messages':
     ensure => file,
     owner  => root,
     group  => root,
-    mode   => '0644',
+    mode   => $log_perm,
   }
 
   file { '/etc/logrotate.d/rsyslog':
