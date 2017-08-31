@@ -23,6 +23,13 @@ class rsyslog (
   $log_perm = '0644'
 ) {
 
+  if ( $package == 'rsyslog5' ) {
+    package { 'rsyslog' :
+      ensure => absent
+    }
+    Package[rsyslog] -> Package[rsyslog5]
+  }
+
   package { $package :
     ensure => $package_ensure,
   }
