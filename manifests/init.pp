@@ -30,6 +30,14 @@ class rsyslog (
     Package[rsyslog] -> Package[rsyslog5]
   }
 
+
+  if (regsubst($package_ensure , '(^5).*','\1') == 5 ) {
+    $syslog_opts='-i /var/run/rsyslogd.pid -c5'
+  }
+  else {
+    $syslog_opts='-i /var/run/rsyslogd.pid'
+  }
+
   package { $package :
     ensure => $package_ensure,
   }
@@ -45,13 +53,13 @@ class rsyslog (
   }
 
   file { '/etc/sysconfig/rsyslog':
-    ensure  => $config_ensure,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => 'puppet:///modules/rsyslog/rsyslog.sysconfig',
-    notify  => Service['rsyslog'],
-    require => Package['rsyslog'],
+    ensure   => $config_ensure,
+    owner    => root,
+    group    => root,
+    mode     => '0644',
+    content  => template('rsyslog/config/rsyslog.sysconfig.erb'),
+    notify   => Service['rsyslog'],
+    require  => Package[$package],
   }
 
   file { '/etc/rsyslog.d':
@@ -60,7 +68,7 @@ class rsyslog (
     group   => root,
     mode    => '0755',
     notify  => Service['rsyslog'],
-    require => Package['rsyslog'],
+    require => Package[$package],
   }
 
   file { '/etc/init.d/rsyslog':
@@ -70,7 +78,7 @@ class rsyslog (
     mode    => '0755',
     source  => "puppet:///modules/${module_name}/rsyslog.initd",
     notify  => Service['rsyslog'],
-    require => Package['rsyslog'],
+    require => Package[$package],
   }
 
   if $manage_syslog {
@@ -79,7 +87,7 @@ class rsyslog (
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
-      require    => [ Package['rsyslog'], Service['syslog'] ],
+      require    => [ Package[$package], Service['syslog'] ],
     }
     service { 'syslog':
       ensure    => $syslog_ensure,
@@ -91,7 +99,7 @@ class rsyslog (
       enable     => $service_enable,
       hasrestart => true,
       hasstatus  => true,
-      require    => Package['rsyslog'],
+      require    => Package[$package],
     }
   }
 
