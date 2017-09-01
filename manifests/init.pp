@@ -13,7 +13,7 @@
 class rsyslog (
   $package_ensure = 'present',
   $config_dst = '/etc/rsyslog.conf',
-  $config_src = 'puppet:///modules/rsyslog/rsyslog.conf',
+  $config_src = undef,
   $config_ensure = present,
   $log_perm = '0644',
   $manage_syslog = true
@@ -21,6 +21,15 @@ class rsyslog (
 
   package { 'rsyslog' :
     ensure => $package_ensure,
+  }
+  if ( $config_src == undef and $::operatingsystemmajrelease == '5' ) {
+    $real_config_src = 'puppet:///modules/rsyslog/rsyslog5.conf'
+  }
+  elsif ( $config_src == undef ) {
+    $real_config_src = 'puppet:///modules/rsyslog/rsyslog.conf'
+  }
+  else {
+    $real_config_src = $config_src
   }
 
   class { '::rsyslog::service':
