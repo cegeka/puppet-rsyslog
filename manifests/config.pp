@@ -19,10 +19,10 @@ class rsyslog::config (
 
  case $::operatingsystemmajrelease {
    '5': {
-     $syslog_opts='-i /var/run/rsyslogd.pid -c3'
+     $syslog_opts='-c3 -i /var/run/rsyslogd.pid'
    }
    '6': {
-     $syslog_opts='-i /var/run/rsyslogd.pid -c5'
+     $syslog_opts='-c5 -i /var/run/rsyslogd.pid'
    }
    '7': {
      $syslog_opts='-i /var/run/rsyslogd.pid'
