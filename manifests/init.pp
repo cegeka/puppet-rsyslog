@@ -11,7 +11,12 @@
 # Sample Usage:
 #
 class rsyslog (
-  $package_ensure = 'present'
+  $package_ensure = 'present',
+  $config_dst = '/etc/rsyslog.conf',
+  $config_src = 'puppet:///modules/rsyslog/rsyslog.conf',
+  $config_ensure = present,
+  $log_perm = '0644',
+  $manage_syslog = true
 ) {
 
   package { 'rsyslog' :
@@ -19,9 +24,13 @@ class rsyslog (
   }
 
   class { '::rsyslog::service':
-    manage_syslog => true
+    manage_syslog => $manage_syslog
   }
   class { '::rsyslog::config':
+    config_dst    => $config_dst,
+    config_src    => $config_src,
+    config_ensure => $config_ensure,
+    log_perm      => $log_perm
   }
   Package['rsyslog'] -> Class['::rsyslog::config'] -> Class['::rsyslog::service']
 }
