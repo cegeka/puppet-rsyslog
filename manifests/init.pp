@@ -37,7 +37,7 @@ class rsyslog (
   }
   class { '::rsyslog::config':
     config_dst    => $config_dst,
-    config_src    => $config_src,
+    config_src    => $real_config_src,
     config_ensure => $config_ensure,
     log_perm      => $log_perm
   }
