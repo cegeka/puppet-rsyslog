@@ -1,11 +1,12 @@
 define rsyslog::config::directives (
-  $content = []
+  $content = [],
+  $ensure = 'file'
 )
 {
   case $::osfamily {
     'RedHat': {
       file { "/etc/rsyslog.d/${title}.conf":
-        ensure   => 'file',
+        ensure   => $ensure,
         owner    => 'root',
         group    => 'root',
         mode     => '0644',

@@ -47,6 +47,7 @@ start() {
         return $RETVAL
 }
 stop() {
+        [ -e /var/run/syslogd.pid ] && killproc -p "/var/run/syslogd.pid" $exec
         echo -n $"Shutting down system logger: "
         killproc -p "$PIDFILE" $exec
         RETVAL=$?
@@ -71,7 +72,7 @@ reload()  {
     return $RETVAL
 }
 rhstatus() {
-        status -p "$PIDFILE" -l $prog $exec
+        status -p "$PIDFILE" -l $prog $exec || status -p "/var/run/syslogd.pid" -l $prog $exec
 }
 restart() {
         stop
