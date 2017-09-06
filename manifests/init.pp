@@ -23,7 +23,7 @@ class rsyslog (
     ensure => $package_ensure,
   }
   if ( $config_src == undef and $::operatingsystemmajrelease == '5' ) {
-    $real_config_src = 'puppet:///modules/rsyslog/rsyslog5.conf'
+    $real_config_src = 'puppet:///modules/rsyslog/rsyslog.conf5'
   }
   elsif ( $config_src == undef ) {
     $real_config_src = 'puppet:///modules/rsyslog/rsyslog.conf'
