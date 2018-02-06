@@ -1,0 +1,11 @@
+<% @logrotate_list.each do |item| -%>
+<% if not @logrotate_exclude_list.include? item -%>
+/var/log/<%= item %>
+<% end -%>
+<% end -%>
+{
+    sharedscripts
+    postrotate
+        /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
+    endscript
+}

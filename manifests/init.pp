@@ -16,7 +16,15 @@ class rsyslog (
   $config_src = undef,
   $config_ensure = present,
   $log_perm = '0644',
-  $manage_syslog = true
+  $manage_syslog = true,
+  $logrotate_exclude_list,
+  $logrotate_list = [
+    'cron',
+    'maillog',
+    'messages',
+    'secure',
+    'spooler'
+  ]
 ) {
 
   package { 'rsyslog' :
@@ -39,7 +47,9 @@ class rsyslog (
     config_dst    => $config_dst,
     config_src    => $real_config_src,
     config_ensure => $config_ensure,
-    log_perm      => $log_perm
+    log_perm      => $log_perm,
+    logrotate_exclude_list => $logrotate_exclude_list,
+    logrotate_list => $logrotate_list
   }
   Package['rsyslog'] -> Class['::rsyslog::config'] -> Class['::rsyslog::service']
 }

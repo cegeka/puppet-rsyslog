@@ -14,7 +14,9 @@ class rsyslog::config (
   $config_dst = '/etc/rsyslog.conf',
   $config_src = 'puppet:///modules/rsyslog/rsyslog.conf',
   $config_ensure = present,
-  $log_perm = '0644'
+  $log_perm = '0644',
+  $logrotate_exclude_list,
+  $logrotate_list
 ) {
 
  case $::operatingsystemmajrelease {
@@ -76,11 +78,11 @@ class rsyslog::config (
   }
 
   file { '/etc/logrotate.d/rsyslog':
-    ensure => file,
-    owner  => root,
-    group  => root,
-    mode   => '0644',
-    source => "puppet:///modules/${module_name}/rsyslog.logrotate"
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('rsyslog/config/rsyslog.logrotate.erb')
   }
 
   file { '/etc/logrotate.d/syslog':
