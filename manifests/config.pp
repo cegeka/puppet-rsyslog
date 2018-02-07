@@ -19,17 +19,17 @@ class rsyslog::config (
   $logrotate_list
 ) {
 
- case $::operatingsystemmajrelease {
-   '5': {
-     $syslog_opts='-c3 -i /var/run/rsyslogd.pid'
-   }
-   '6': {
-     $syslog_opts='-c5 -i /var/run/rsyslogd.pid'
-   }
-   '7': {
-     $syslog_opts='-i /var/run/rsyslogd.pid'
-   }
- }
+  case $::operatingsystemmajrelease {
+    '5': {
+      $syslog_opts='-c3 -i /var/run/rsyslogd.pid'
+    }
+    '6': {
+      $syslog_opts='-c5 -i /var/run/rsyslogd.pid'
+    }
+    '7': {
+      $syslog_opts='-i /var/run/rsyslogd.pid'
+    }
+  }
 
   file { $config_dst :
     ensure  => $config_ensure,
