@@ -1,8 +1,11 @@
-class rsyslog::service ( $manage_syslog = true) {
+class rsyslog::service (
+  $manage_syslog = true,
+  $service_ensure = running
+) {
 
   if $manage_syslog {
     service { 'rsyslog':
-      ensure     => 'running',
+      ensure     => $service_ensure,
       enable     => true,
       hasrestart => true,
       hasstatus  => true,
@@ -14,7 +17,7 @@ class rsyslog::service ( $manage_syslog = true) {
     }
   } else {
     service { 'rsyslog':
-      ensure     => 'running',
+      ensure     => $service_ensure,
       enable     => true,
       hasrestart => true,
       hasstatus  => true,

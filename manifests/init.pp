@@ -11,10 +11,11 @@
 # Sample Usage:
 #
 class rsyslog (
-  $package_ensure = 'present',
+  $package_ensure = present,
+  $service_ensure = running,
   $config_dst = '/etc/rsyslog.conf',
   $config_src = undef,
-  $config_ensure = present,
+  $config_ensure = $package_ensure,
   $log_perm = '0644',
   $manage_syslog = true,
   $logrotate_exclude_list,
@@ -41,7 +42,8 @@ class rsyslog (
   }
 
   class { '::rsyslog::service':
-    manage_syslog => $manage_syslog
+    service_ensure => $service_ensure,
+    manage_syslog  => $manage_syslog
   }
   class { '::rsyslog::config':
     config_dst    => $config_dst,
