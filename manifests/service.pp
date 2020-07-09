@@ -12,8 +12,8 @@ class rsyslog::service (
       require    => [ Package['rsyslog'], Service['syslog'] ],
     }
     service { 'syslog':
-      ensure    => 'stopped',
-      hasstatus => true,
+      ensure    => stopped,
+      enable    => false
     }
   } else {
     service { 'rsyslog':
