@@ -9,19 +9,7 @@ class rsyslog::service (
       enable     => true,
       hasrestart => true,
       hasstatus  => true,
-      require    => [ Package['rsyslog'], Service['syslog'] ],
-    }
-    service { 'syslog':
-      ensure    => stopped,
-      enable    => false
-    }
-  } else {
-    service { 'rsyslog':
-      ensure     => $service_ensure,
-      enable     => true,
-      hasrestart => true,
-      hasstatus  => true,
-      require    => Package['rsyslog'],
+      require    => [ Package['rsyslog'] ],
     }
   }
 }
