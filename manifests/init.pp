@@ -12,12 +12,12 @@
 #
 class rsyslog (
   $package_ensure = present,
-  $service_ensure = running,
+  $service_status = running,
+  $service_enable = true,
   $config_dst = '/etc/rsyslog.conf',
   $config_src = undef,
   $config_ensure = $package_ensure,
   $log_perm = '0644',
-  $manage_syslog = true,
   $logrotate_exclude_list,
   $logrotate_list = [
     'cron',
@@ -42,9 +42,10 @@ class rsyslog (
   }
 
   class { '::rsyslog::service':
-    service_ensure => $service_ensure,
-    manage_syslog  => $manage_syslog
+    service_status => $service_status,
+    service_enable => $service_enable
   }
+
   class { '::rsyslog::config':
     config_dst    => $config_dst,
     config_src    => $real_config_src,

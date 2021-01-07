@@ -1,15 +1,14 @@
 class rsyslog::service (
-  $manage_syslog = true,
-  $service_ensure = running
+  $service_status = running,
+  $service_enable = true
 ) {
 
-  if $manage_syslog {
-    service { 'rsyslog':
-      ensure     => $service_ensure,
-      enable     => true,
-      hasrestart => true,
-      hasstatus  => true,
-      require    => [ Package['rsyslog'] ],
-    }
+  service { 'rsyslog':
+    ensure  => $service_status,
+    enable  => $service_enable,
+    require => [
+      Package['rsyslog']
+    ]
   }
+
 }
