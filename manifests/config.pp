@@ -16,7 +16,8 @@ class rsyslog::config (
   $config_ensure = present,
   $log_perm = '0644',
   $logrotate_exclude_list,
-  $logrotate_list
+  $logrotate_list,
+  $use_default_config = true
 ) {
 
   case $::operatingsystemmajrelease {
@@ -31,14 +32,16 @@ class rsyslog::config (
     }
   }
 
-  file { $config_dst :
-    ensure  => $config_ensure,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    source  => $config_src,
-    notify  => Service['rsyslog'],
-    require => Package['rsyslog'],
+  if $use_default_config {
+    file { $config_dst :
+      ensure  => $config_ensure,
+      owner   => root,
+      group   => root,
+      mode    => '0644',
+      source  => $config_src,
+      notify  => Service['rsyslog'],
+      require => Package['rsyslog'],
+    }
   }
 
   file { '/etc/sysconfig/rsyslog':

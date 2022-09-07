@@ -15,7 +15,8 @@ class rsyslog (
   $service_status = running,
   $service_enable = true,
   $config_dst = '/etc/rsyslog.conf',
-  $config_src = lookup({ 'name' => 'profile::iac::rsyslog::alt_config', 'default_value' => undef}),
+  $config_src = undef,
+  $use_default_config = true,
   $config_ensure = $package_ensure,
   $log_perm = '0644',
   $logrotate_exclude_list,
@@ -52,7 +53,8 @@ class rsyslog (
     config_ensure => $config_ensure,
     log_perm      => $log_perm,
     logrotate_exclude_list => $logrotate_exclude_list,
-    logrotate_list => $logrotate_list
+    logrotate_list => $logrotate_list,
+    use_default_config => $use_default_config
   }
   Package['rsyslog'] -> Class['::rsyslog::config'] -> Class['::rsyslog::service']
 }
