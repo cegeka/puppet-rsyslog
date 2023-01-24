@@ -1,13 +1,14 @@
 define rsyslog::rule (
   $facility    = undef,
   $level       = 'info',
-  $destination = undef
+  $destination = undef,
+  $ensure      = 'file'
 )
 {
   case $::osfamily {
     'RedHat': {
       file { "/etc/rsyslog.d/${title}.conf":
-        ensure  => 'file',
+        ensure  => $ensure,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',
