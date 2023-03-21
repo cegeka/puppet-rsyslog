@@ -4,8 +4,7 @@
 /var/log/secure
 /var/log/spooler
 {
+    missingok
+    copytruncate
     sharedscripts
-    postrotate
-        /bin/kill -HUP `cat /var/run/rsyslogd.pid 2> /dev/null` 2> /dev/null || true
-    endscript
 }
